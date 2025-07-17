@@ -3,36 +3,33 @@ on: [push]
 jobs:
   publish:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./example-site
     steps:
       - uses: actions/checkout@v4
 
 
       - name: Set up pnpm
-        working-directory: ./example-site
         uses: pnpm/action-setup@v4
         with:
           version: 10
       - name: Install node
-        working-directory: ./example-site
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
       - name: Install dependencies
-        working-directory: ./example-site
         run: pnpm install
 
 
       - name: Build site
-        working-directory: ./example-site
         run: ./build.sh
       - name: Compress to tar archive
-        working-directory: ./example-site
         run: tar -cfv dist docker-compose.yml archive.tar.gz
 
 
       - name: Publish to seelf
-        working-directory: ./example-site
         run: |
           curl -i -X POST -H "Authorization: Bearer $SEELF_TOKEN" -F environment=$SEELF_ENVIRONMENT -F archive=@archive.tar.gz $SEELF_APPLICATION_URL
         env:
