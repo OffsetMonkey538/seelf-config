@@ -25,7 +25,7 @@ jobs:
       - name: Build site
         run: ./build.sh
       - name: Compress to tar archive
-        run: tar -cfv dist docker-compose.yml archive.tar.gz
+        run: tar -cfv archive.tar.gz dist docker-compose.yml
 
 
       - name: Publish to seelf
