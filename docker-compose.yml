@@ -1,0 +1,39 @@
+services:
+  seelf:
+    image: yuukanoo/seelf:latest
+    container_name: seelf
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./seelf/ssh:/root/.ssh
+      - ./seelf/data:/seelf/data
+    networks:
+      - traefik-proxy
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.seelf.rule=Host(`seelf.oracle.offsetmonkey538.top`)"
+      - "traefik.http.routers.seelf.service=seelf"
+      - "traefik.http.services.seelf.loadbalancer.server.port=8080"
+
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/config/rules:/etc/traefik/rules:ro
+      - ./traefik/logs:/var/log:rw
+      - ./traefik/acme.json:/var/traefik/certs/acme.json:rw
+    networks:
+      - traefik-proxy
+
+networks:
+  traefik-proxy:
+    external: true
