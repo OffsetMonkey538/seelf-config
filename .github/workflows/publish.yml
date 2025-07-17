@@ -22,13 +22,8 @@ jobs:
         run: pnpm install
 
 
-      - name: Build site
+      - name: Publish
         run: ./build.sh
-
-
-      - name: Publish to seelf
-        run: |
-          "curl -i -X POST -H \"Authorization: Bearer $SEELF_TOKEN\" -F environment=$SEELF_ENVIRONMENT -F archive=@archive.tar.gz $SEELF_APPLICATION_URL"
         env:
           SEELF_TOKEN: ${{ secrets.seelf_token }}
           SEELF_ENVIRONMENT: production
