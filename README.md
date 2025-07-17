@@ -11,3 +11,6 @@ Rename `example.env` to `.env` and modify the values. Cloudflare token can be cr
 
 Create an empty `traefik/acme.json` file and make sure to set the permissions to 600 with `chmod 600 traefik/acme.json`!  
 Edit the `traefik/config/traefik.yml` file and modify it to your liking. I think the main thing to change would be the domains to generate SSL certs for and the email to use for generating the certs. Other stuff can probably remain the same.
+
+Before starting the container, you need to create the `traefik-proxy` network with `docker network create traefik-proxy`.  
+Then it can be started using `docker compose up -d`
