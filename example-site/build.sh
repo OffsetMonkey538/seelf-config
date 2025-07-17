@@ -1,5 +1,5 @@
 #!/bin/sh
 
 pnpm run build
-tar -czvf archive.tar.gz dist docker-compose.yml
+tar -czvf archive.tar.gz dist docker-compose.yml nginx.conf
 curl -i -X POST -H "Authorization: Bearer $SEELF_TOKEN" -F environment=$SEELF_ENVIRONMENT -F archive=@archive.tar.gz $SEELF_APPLICATION_URL
