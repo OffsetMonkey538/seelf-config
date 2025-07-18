@@ -17,6 +17,23 @@ services:
       - "traefik.http.routers.seelf.service=seelf"
       - "traefik.http.services.seelf.loadbalancer.server.port=8080"
 
+  registry:
+    image: registry:latest
+    container_name: registry
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./registry/config/config.yml:/etc/docker/registry/config.yml:ro
+      - ./registry/data:/var/lib/registry:rw
+    networks:
+      - traefik-proxy
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.registry.rule=Host(`registry.oracle.offsetmonkey538.top`)"
+      - "traefik.http.routers.registry.service=registry"
+      - "traefik.http.services.registry.loadbalancer.server.port=5000"
+
   traefik:
     image: traefik:latest
     container_name: traefik
