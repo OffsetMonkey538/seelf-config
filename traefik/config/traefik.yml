@@ -9,7 +9,8 @@ log:
   compress: true
 
 api:
-  dashboard: false
+  dashboard: true
+  insecure: false
 
 entryPoints:
   # Insecure (http) redirects to secure (https)
